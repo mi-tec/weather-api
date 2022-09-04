@@ -3,33 +3,38 @@ import "./App.scss";
 
 import Search from "./Components/Search/Search";
 import WeatherWidget from "./Components/WeatherWidget/WeatherWidget";
+import ForecastWeather from "./Components/ForecastWeather/ForecastWeather";
 
 import { CurrentWeatherApi, CurrentWeatherAPIURL } from "./api";
 
 function App() {
     const [currentWeather, setCurrentWeather] = useState(null);
+    const [forecastWeather, setForecastWeather] = useState(null);
 
     const handleOnSearch = (handleSearch) => {
         const [lat, lon] = handleSearch.value.split(" ");
-        const [city, code] = handleSearch.label.split(",");
-
-        //https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 
         const currentWeatherFetch = fetch(
-            `${CurrentWeatherAPIURL}?lat=${lat}&lon=${lon}&units=metric&appid=${CurrentWeatherApi}`
+            `${CurrentWeatherAPIURL}/weather?lat=${lat}&lon=${lon}&units=metric&appid=${CurrentWeatherApi}`
         );
 
-        console.log(
-            `${CurrentWeatherAPIURL}?lat=${lat}&lon=${lon}&appid=${CurrentWeatherApi}`
+        const forecastWeatherFetch = fetch(
+            `${CurrentWeatherAPIURL}/forecast/?lat=${lat}&lon=${lon}&appid=${CurrentWeatherApi}`
         );
 
-        Promise.all([currentWeatherFetch])
+        Promise.all([currentWeatherFetch, forecastWeatherFetch])
             .then(async (reponse) => {
                 const weatherResponse = await reponse[0].json();
+                const forecastResponse = await reponse[1].json();
 
                 setCurrentWeather({
                     city: handleSearch.label,
                     ...weatherResponse,
+                });
+
+                setForecastWeather({
+                    city: handleSearch.label,
+                    ...forecastResponse,
                 });
             })
             .catch((error) => {
@@ -41,6 +46,7 @@ function App() {
         <div className="App">
             <Search onSearchHandle={handleOnSearch} />
             {currentWeather && <WeatherWidget data={currentWeather} />}
+            {/* {forecastWeather && <ForecastWeather data={forecastWeather} />} */}
         </div>
     );
 }
