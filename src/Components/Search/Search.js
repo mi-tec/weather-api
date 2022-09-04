@@ -36,7 +36,7 @@ function Search({ onSearchHandle }) {
     };
 
     return (
-        <div className="search pt-5">
+        <div className="search">
             <AsyncPaginate
                 debounceTimeout={600}
                 value={search}

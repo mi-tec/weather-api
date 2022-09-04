@@ -43,7 +43,7 @@ function App() {
     };
 
     return (
-        <div className="App">
+        <div className="App py-6">
             <Search onSearchHandle={handleOnSearch} />
             {currentWeather && <WeatherWidget data={currentWeather} />}
             {/* {forecastWeather && <ForecastWeather data={forecastWeather} />} */}
