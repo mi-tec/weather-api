@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 
+import "./Search.scss";
+
 import { AsyncPaginate } from "react-select-async-paginate";
 import { geoDataAPIOptions, geoDataAPIURL } from "../../api";
+
+console.log(geoDataAPIOptions);
 
 function Search({ onSearchHandle }) {
     const [search, setSearch] = useState(null);
